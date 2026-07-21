@@ -20,5 +20,34 @@ tags: ["studio", "巴赫", "巴洛克", "弦乐", "入门必备", "治愈系"]
 
 * **听感体验**：低音部分就像稳重沉静的心跳（低音连续的走动），而高音的小提琴则像一条在空中优雅绵延飘动的丝带。整首曲子没有任何张扬的地方，却有一种让人瞬间安静下来的魔法。
 * **适合场景**：深夜一个人看书、雨天喝咖啡、或者需要平复焦虑情绪的时候。
-* **版本记录**：
-  * 推荐演绎：马里纳指挥圣马丁室内乐团（Marriner / Academy of St Martin in the Fields）
+### 💿 名盘演绎版本横向对比 (Comparative Version Matrix)
+
+<div style="overflow-x: auto; margin: 1.5rem 0;">
+  <table style="width: 100%; border-collapse: collapse; font-size: 0.9rem; text-align: left; background: var(--card-bg); border: 1px solid var(--border-color);">
+    <thead>
+      <tr style="background: #FAF7F2; border-bottom: 2px solid var(--accent-red); color: var(--accent-red);">
+        <th style="padding: 10px;">指挥 / 独奏</th>
+        <th style="padding: 10px;">乐团 / 协奏</th>
+        <th style="padding: 10px;">厂牌 & 年份</th>
+        <th style="padding: 10px;">演绎风格特质</th>
+        <th style="padding: 10px;">推荐度</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr style="border-bottom: 1px solid var(--border-color);">
+        <td style="padding: 10px; font-weight: bold;">内维尔·马里纳</td>
+        <td style="padding: 10px;">圣马丁室内乐团</td>
+        <td style="padding: 10px;">Decca (1971)</td>
+        <td style="padding: 10px;">现代乐器演绎的典范，线条极其流畅而优雅</td>
+        <td style="padding: 10px; color: #B8860B;">⭐⭐⭐⭐⭐</td>
+      </tr>
+      <tr style="border-bottom: 1px solid var(--border-color);">
+        <td style="padding: 10px; font-weight: bold;">特雷沃·平诺克</td>
+        <td style="padding: 10px;">英国协奏团 (The English Concert)</td>
+        <td style="padding: 10px;">DG Archiv (1983)</td>
+        <td style="padding: 10px;">古乐考据派（HIP），清澈干练，速度略快</td>
+        <td style="padding: 10px; color: #B8860B;">⭐⭐⭐⭐☆</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
