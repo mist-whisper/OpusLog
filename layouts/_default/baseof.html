@@ -1,0 +1,18 @@
+{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} - {{ .Site.Title }}{{ end }}
+  
+
+
+  
+    {{ .Site.Title }}
+    {{ .Site.Params.subtitle }}
+    
+      {{ range .Site.Menus.main }}
+        {{ .Name }}
+      {{ end }}
+    
+  
+  
+    {{ block "main" . }}{{ end }}
+  
+  
+    © {{ now.Format "2006" }} OpusLog · 典雅与序位的数字记录
