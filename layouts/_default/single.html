@@ -5,18 +5,27 @@
   </div>
   <h1 style="font-size: 1.6rem; color: #1A1A1A; margin-bottom: 1.2rem; line-height: 1.4;">{{ .Title }}</h1>
   
+  <!-- 古典乐元数据面板 (支持现场观演字段) -->
   <div style="background: #F7F4EE; border: 1px dashed var(--border-color); padding: 1.2rem; margin-bottom: 2rem; border-radius: 4px; font-size: 0.9rem;">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.6rem;">
       <div><strong>🎼 作曲家：</strong>{{ .Params.composer }}</div>
       {{ if .Params.catalog_no }}<div><strong>🔢 作品编号：</strong><span class="meta-catalog">{{ .Params.catalog_no }}</span></div>{{ end }}
       {{ if .Params.era }}<div><strong>🏛️ 音乐时期：</strong>{{ index .Site.Params.eras .Params.era | default .Params.era }}</div>{{ end }}
       {{ if .Params.rating }}<div><strong>⭐ 个人评分：</strong>{{ .Params.rating }} / 5.0</div>{{ end }}
+      
+      {{ if .Params.performance }}
+        {{ if .Params.performance.conductor }}<div><strong>🪄 指挥：</strong>{{ .Params.performance.conductor }}</div>{{ end }}
+        {{ if .Params.performance.orchestra }}<div><strong>🎻 乐团：</strong>{{ .Params.performance.orchestra }}</div>{{ end }}
+        {{ if .Params.performance.venue }}<div><strong>🏛️ 场地：</strong>{{ .Params.performance.venue }}</div>{{ end }}
+        {{ if .Params.performance.seat }}<div><strong>🪑 坐席：</strong>{{ .Params.performance.seat }}</div>{{ end }}
+      {{ end }}
     </div>
+
     {{ if .Params.tags }}
     <div style="margin-top: 0.8rem; border-top: 1px solid var(--border-color); padding-top: 0.6rem;">
       <strong>🏷️ 标签：</strong>
       {{ range .Params.tags }}
-        <span class="meta-badge">{{ . }}</span>
+        <span class="meta-badge"><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/" style="text-decoration:none; color:inherit;">{{ . }}</a></span>
       {{ end }}
     </div>
     {{ end }}
