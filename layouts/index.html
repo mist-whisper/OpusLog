@@ -1,0 +1,29 @@
+{{ define "main" }}
+
+  📜 最新档案记录
+
+
+
+  {{ range .Site.RegularPages }}
+  
+    
+      {{ .Params.archive_id | default "OPUS" }} · {{ .Date.Format "2006-01-02" }}
+    
+    
+      {{ .Title }}
+    
+    
+      🎼 {{ .Params.composer }}
+      {{ if .Params.catalog_no }}{{ .Params.catalog_no }}{{ end }}
+      {{ if .Params.era }}🏛️ {{ index .Site.Params.eras .Params.era | default .Params.era }}{{ end }}
+    
+    
+      {{ .Summary | truncate 120 }}
+    
+    
+      阅读完整档案 →
+    
+  
+  {{ end }}
+
+{{ end }}
