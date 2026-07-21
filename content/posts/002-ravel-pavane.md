@@ -10,7 +10,7 @@ work_title: "Pavane pour une infante défunte"
 catalog_no: "M. 19"
 
 rating: 4.8
-tags: ["拉威尔", "印象派", "钢琴/管弦乐", "复古", "优雅"]
+tags: ["studio", "拉威尔", "印象派", "钢琴/管弦乐", "复古", "优雅"]
 ---
 
 > 💡 **小白的小知识卡片：真的有位公主去世了吗？**
