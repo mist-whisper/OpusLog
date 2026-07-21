@@ -10,7 +10,7 @@ work_title: "Orchestral Suite No. 3 in D major: II. Air"
 catalog_no: "BWV 1068" # 巴赫作品目录编号
 
 rating: 5.0
-tags: ["巴赫", "巴洛克", "弦乐", "入门必备", "治愈系"]
+tags: ["studio", "巴赫", "巴洛克", "弦乐", "入门必备", "治愈系"]
 ---
 
 > 💡 **小白的小知识卡片：为什么叫“G弦”？**
