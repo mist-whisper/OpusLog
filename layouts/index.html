@@ -1,44 +1,66 @@
 {{ define "main" }}
-<!-- 顶部统计与排序控制栏 -->
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
-  <h2 style="font-size: 1.2rem; margin: 0; color: #555;">
-    📜 档案记录流 <span style="font-size: 0.85rem; color: #888; font-weight: normal;">(共 {{ len .Site.RegularPages }} 篇)</span>
+<!-- 1. 数字档案库统计看板 (Stats Counter) -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2.5rem;">
+  <div style="background: #F7F4EE; border: 1px solid var(--border-color); padding: 1rem; border-radius: 4px; text-align: center;">
+    <div style="font-size: 1.8rem; font-weight: bold; color: var(--accent-red);">{{ len .Site.RegularPages }}</div>
+    <div style="font-size: 0.85rem; color: #666;">📜 全局归档档案</div>
+  </div>
+  <div style="background: #F7F4EE; border: 1px solid var(--border-color); padding: 1rem; border-radius: 4px; text-align: center;">
+    <div style="font-size: 1.8rem; font-weight: bold; color: #B8860B;">{{ len (where .Site.RegularPages "Params.type" "studio") }}</div>
+    <div style="font-size: 0.85rem; color: #666;">💿 唱片名盘版本</div>
+  </div>
+  <div style="background: #F7F4EE; border: 1px solid var(--border-color); padding: 1rem; border-radius: 4px; text-align: center;">
+    <div style="font-size: 1.8rem; font-weight: bold; color: #2E8B57;">{{ len (where .Site.RegularPages "Params.type" "live") }}</div>
+    <div style="font-size: 0.85rem; color: #666;">🎟️ 现场观演足迹</div>
+  </div>
+</div>
+
+<!-- 2. 档案记录流与前端排序组件 -->
+<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-red); padding-bottom: 0.6rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
+  <h2 style="font-size: 1.25rem; margin: 0; color: var(--text-color);">
+    🏛️ 档案流展厅
   </h2>
   
-  <!-- 🔀 纯前端升降序与多维度排序组件 -->
   <div style="font-size: 0.88rem; color: #666;">
-    <label for="archive-sort">排序方式：</label>
+    <label for="archive-sort">排序：</label>
     <select id="archive-sort" onchange="sortArchives()" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 4px 8px; border-radius: 4px; font-family: inherit; font-size: 0.85rem; cursor: pointer;">
-      <option value="date-desc">按发布时间 (最新 → 最早)</option>
-      <option value="date-asc">按发布时间 (最早 → 最新)</option>
-      <option value="rating-desc">按个人评分 (最高 ⭐)</option>
+      <option value="date-desc">发布时间 (最新 → 最早)</option>
+      <option value="date-asc">发布时间 (最早 → 最新)</option>
+      <option value="rating-desc">个人评分 (最高 ⭐)</option>
     </select>
   </div>
 </div>
 
-<!-- 档案卡片容器 -->
+<!-- 3. 档案卡片列表 -->
 <div class="archive-list" id="archive-container">
-  <!-- Hugo 默认按 Date/Lastmod 倒序排列 -->
   {{ range .Site.RegularPages.ByDate.Reversed }}
   <article class="archive-card" 
            data-date="{{ .Date.Format "2006-01-02" }}" 
            data-rating="{{ .Params.rating | default 0 }}"
-           style="background: var(--card-bg); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-red); padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 4px;">
-    <div style="font-size: 0.85rem; color: #888; margin-bottom: 0.3rem;">
-      <span>{{ .Params.archive_id | default "OPUS" }}</span> · <span>{{ .Date.Format "2006-01-02" }}</span>
+           style="background: var(--card-bg); border: 1px solid var(--border-color); border-left: 4px solid {{ if eq .Params.type "live" }}#2E8B57{{ else }}var(--accent-red){{ end }}; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 4px;">
+    
+    <div style="font-size: 0.85rem; color: #888; margin-bottom: 0.3rem; display: flex; justify-content: space-between;">
+      <span>{{ .Params.archive_id | default "OPUS" }} · {{ .Date.Format "2006-01-02" }}</span>
+      <span style="font-weight: bold; color: {{ if eq .Params.type "live" }}#2E8B57{{ else }}var(--accent-red){{ end }};">
+        {{ if eq .Params.type "live" }}🎟️ 现场观演{{ else }}💿 唱片名盘{{ end }}
+      </span>
     </div>
+
     <h3 style="margin: 0.2rem 0 0.8rem 0; font-size: 1.25rem;">
       <a href="{{ .RelPermalink }}" style="color: var(--accent-red); text-decoration: none;">{{ .Title }}</a>
     </h3>
+
     <div style="margin-bottom: 0.8rem;">
       <span class="meta-badge">🎼 {{ .Params.composer }}</span>
       {{ if .Params.catalog_no }}<span class="meta-badge meta-catalog">{{ .Params.catalog_no }}</span>{{ end }}
       {{ if .Params.era }}<span class="meta-badge">🏛️ {{ index .Site.Params.eras .Params.era | default .Params.era }}</span>{{ end }}
       {{ if .Params.rating }}<span class="meta-badge" style="color: #B8860B;">⭐ {{ .Params.rating }}</span>{{ end }}
     </div>
+
     <p style="font-size: 0.95rem; color: #555; margin: 0.5rem 0 1rem 0;">
       {{ .Summary | truncate 120 }}
     </p>
+
     <div>
       <a href="{{ .RelPermalink }}" style="font-size: 0.88rem; font-weight: bold; color: var(--text-color); text-decoration: none;">阅读完整档案 →</a>
     </div>
@@ -46,7 +68,7 @@
   {{ end }}
 </div>
 
-<!-- 轻量 JS 动态排序脚本 -->
+<!-- 动态排序脚本 -->
 <script>
 function sortArchives() {
   const container = document.getElementById('archive-container');
@@ -63,7 +85,6 @@ function sortArchives() {
     }
   });
 
-  // 清空并重新按顺序渲染 DOM
   container.innerHTML = '';
   cards.forEach(card => container.appendChild(card));
 }
