@@ -1,11 +1,29 @@
 {{ define "main" }}
-<h2 style="font-size: 1.2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.6rem; margin-bottom: 2rem; color: #555;">
-  📜 最新档案记录
-</h2>
+<!-- 顶部统计与排序控制栏 -->
+<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid var(--border-color); padding-bottom: 0.8rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
+  <h2 style="font-size: 1.2rem; margin: 0; color: #555;">
+    📜 档案记录流 <span style="font-size: 0.85rem; color: #888; font-weight: normal;">(共 {{ len .Site.RegularPages }} 篇)</span>
+  </h2>
+  
+  <!-- 🔀 纯前端升降序与多维度排序组件 -->
+  <div style="font-size: 0.88rem; color: #666;">
+    <label for="archive-sort">排序方式：</label>
+    <select id="archive-sort" onchange="sortArchives()" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 4px 8px; border-radius: 4px; font-family: inherit; font-size: 0.85rem; cursor: pointer;">
+      <option value="date-desc">按发布时间 (最新 → 最早)</option>
+      <option value="date-asc">按发布时间 (最早 → 最新)</option>
+      <option value="rating-desc">按个人评分 (最高 ⭐)</option>
+    </select>
+  </div>
+</div>
 
-<div class="archive-list">
-  {{ range .Site.RegularPages }}
-  <article style="background: var(--card-bg); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-red); padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 4px;">
+<!-- 档案卡片容器 -->
+<div class="archive-list" id="archive-container">
+  <!-- Hugo 默认按 Date/Lastmod 倒序排列 -->
+  {{ range .Site.RegularPages.ByDate.Reversed }}
+  <article class="archive-card" 
+           data-date="{{ .Date.Format "2006-01-02" }}" 
+           data-rating="{{ .Params.rating | default 0 }}"
+           style="background: var(--card-bg); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-red); padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 4px;">
     <div style="font-size: 0.85rem; color: #888; margin-bottom: 0.3rem;">
       <span>{{ .Params.archive_id | default "OPUS" }}</span> · <span>{{ .Date.Format "2006-01-02" }}</span>
     </div>
@@ -16,6 +34,7 @@
       <span class="meta-badge">🎼 {{ .Params.composer }}</span>
       {{ if .Params.catalog_no }}<span class="meta-badge meta-catalog">{{ .Params.catalog_no }}</span>{{ end }}
       {{ if .Params.era }}<span class="meta-badge">🏛️ {{ index .Site.Params.eras .Params.era | default .Params.era }}</span>{{ end }}
+      {{ if .Params.rating }}<span class="meta-badge" style="color: #B8860B;">⭐ {{ .Params.rating }}</span>{{ end }}
     </div>
     <p style="font-size: 0.95rem; color: #555; margin: 0.5rem 0 1rem 0;">
       {{ .Summary | truncate 120 }}
@@ -26,4 +45,27 @@
   </article>
   {{ end }}
 </div>
+
+<!-- 轻量 JS 动态排序脚本 -->
+<script>
+function sortArchives() {
+  const container = document.getElementById('archive-container');
+  const cards = Array.from(container.getElementsByClassName('archive-card'));
+  const sortValue = document.getElementById('archive-sort').value;
+
+  cards.sort((a, b) => {
+    if (sortValue === 'date-desc') {
+      return new Date(b.dataset.date) - new Date(a.dataset.date);
+    } else if (sortValue === 'date-asc') {
+      return new Date(a.dataset.date) - new Date(b.dataset.date);
+    } else if (sortValue === 'rating-desc') {
+      return parseFloat(b.dataset.rating) - parseFloat(a.dataset.rating);
+    }
+  });
+
+  // 清空并重新按顺序渲染 DOM
+  container.innerHTML = '';
+  cards.forEach(card => container.appendChild(card));
+}
+</script>
 {{ end }}
