@@ -1,35 +1,48 @@
-{{ define "main" }}
+{{ .Title }} - {{ .Site.Title }}
+  
+
 
   
-    首页 / 档案详情
-  
-  {{ .Title }}
-  
-  
-  
+    {{ .Site.Title }}
+    {{ .Site.Params.subtitle }}
     
-      🎼 作曲家：{{ .Params.composer }}
-      {{ if .Params.catalog_no }}🔢 作品编号：{{ .Params.catalog_no }}{{ end }}
-      {{ if .Params.era }}🏛️ 音乐时期：{{ index .Site.Params.eras .Params.era | default .Params.era }}{{ end }}
-      {{ if .Params.rating }}⭐ 个人评分：{{ .Params.rating }} / 5.0{{ end }}
-    
-    {{ if .Params.tags }}
-    
-      🏷️ 标签：
-      {{ range .Params.tags }}
-        {{ . }}
+      {{ range .Site.Menus.main }}
+        {{ .Name }}
       {{ end }}
     
-    {{ end }}
   
+  
+    
+      
+        首页 / 档案详情
+      
+      {{ .Title }}
+      
+      
+        
+          🎼 作曲家：{{ .Params.composer }}
+          {{ if .Params.catalog_no }}🔢 作品编号：{{ .Params.catalog_no }}{{ end }}
+          {{ if .Params.era }}🏛️ 音乐时期：{{ index .Site.Params.eras .Params.era | default .Params.era }}{{ end }}
+          {{ if .Params.rating }}⭐ 个人评分：{{ .Params.rating }} / 5.0{{ end }}
+        
+        {{ if .Params.tags }}
+        
+          🏷️ 标签：
+          {{ range .Params.tags }}
+            {{ . }}
+          {{ end }}
+        
+        {{ end }}
+      
 
-  
-  
-    {{ .Content }}
-  
+      
+        {{ .Content }}
+      
 
+      
+        档案编号：{{ .Params.archive_id }} | 归档日期：{{ .Date.Format "2006年01月02日" }}
+      
+    
   
-    档案编号：{{ .Params.archive_id }} | 归档日期：{{ .Date.Format "2006年01月02日" }}
   
-
-{{ end }}
+    © {{ now.Format "2006" }} OpusLog · 典雅与序位的数字记录
