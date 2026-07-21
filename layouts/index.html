@@ -1,28 +1,32 @@
 {{ define "main" }}
-<!-- 1. 数字档案库统计看板 (Stats Counter) -->
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; margin-bottom: 2.5rem;">
-  <div style="background: #F7F4EE; border: 1px solid var(--border-color); padding: 1rem; border-radius: 4px; text-align: center;">
-    <div style="font-size: 1.8rem; font-weight: bold; color: var(--accent-red);">{{ len .Site.RegularPages }}</div>
-    <div style="font-size: 0.85rem; color: #666;">📜 全局归档档案</div>
+<!-- 1. 数字档案库统计看板 -->
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+  <div style="background: #F7F4EE; border: 1px solid var(--border-color); padding: 0.8rem; border-radius: 4px; text-align: center;">
+    <div style="font-size: 1.6rem; font-weight: bold; color: var(--accent-red);">{{ len .Site.RegularPages }}</div>
+    <div style="font-size: 0.82rem; color: #666;">📜 全局归档</div>
   </div>
-  <div style="background: #F7F4EE; border: 1px solid var(--border-color); padding: 1rem; border-radius: 4px; text-align: center;">
-    <div style="font-size: 1.8rem; font-weight: bold; color: #B8860B;">{{ len (where .Site.RegularPages "Params.type" "studio") }}</div>
-    <div style="font-size: 0.85rem; color: #666;">💿 唱片名盘版本</div>
+  <div style="background: #F7F4EE; border: 1px solid var(--border-color); padding: 0.8rem; border-radius: 4px; text-align: center;">
+    <div style="font-size: 1.6rem; font-weight: bold; color: #B8860B;">{{ len (where .Site.RegularPages "Params.type" "studio") }}</div>
+    <div style="font-size: 0.82rem; color: #666;">💿 唱片名盘</div>
   </div>
-  <div style="background: #F7F4EE; border: 1px solid var(--border-color); padding: 1rem; border-radius: 4px; text-align: center;">
-    <div style="font-size: 1.8rem; font-weight: bold; color: #2E8B57;">{{ len (where .Site.RegularPages "Params.type" "live") }}</div>
-    <div style="font-size: 0.85rem; color: #666;">🎟️ 现场观演足迹</div>
+  <div style="background: #F7F4EE; border: 1px solid var(--border-color); padding: 0.8rem; border-radius: 4px; text-align: center;">
+    <div style="font-size: 1.6rem; font-weight: bold; color: #2E8B57;">{{ len (where .Site.RegularPages "Params.type" "live") }}</div>
+    <div style="font-size: 0.82rem; color: #666;">🎟️ 现场观演</div>
   </div>
 </div>
 
-<!-- 2. 档案记录流与前端排序组件 -->
-<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-red); padding-bottom: 0.6rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 10px;">
-  <h2 style="font-size: 1.25rem; margin: 0; color: var(--text-color);">
-    🏛️ 档案流展厅
-  </h2>
+<!-- 2. 原地分类筛选 + 排序控制控制台 -->
+<div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid var(--accent-red); padding-bottom: 0.8rem; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 12px;">
   
-  <div style="font-size: 0.88rem; color: #666;">
-    <label for="archive-sort">排序：</label>
+  <!-- 🔘 切换标签组（点击无刷新筛选） -->
+  <div style="display: flex; gap: 6px;">
+    <button onclick="filterType('all', this)" class="filter-btn active" style="background: var(--accent-red); color: white; border: none; padding: 4px 12px; border-radius: 4px; font-size: 0.85rem; cursor: pointer; font-family: inherit;">全部</button>
+    <button onclick="filterType('studio', this)" class="filter-btn" style="background: var(--tag-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 4px; font-size: 0.85rem; cursor: pointer; font-family: inherit;">💿 唱片</button>
+    <button onclick="filterType('live', this)" class="filter-btn" style="background: var(--tag-bg); color: var(--text-color); border: 1px solid var(--border-color); padding: 4px 12px; border-radius: 4px; font-size: 0.85rem; cursor: pointer; font-family: inherit;">🎟️ 现场</button>
+  </div>
+
+  <!-- 🔀 排序下拉框 -->
+  <div style="font-size: 0.85rem; color: #666;">
     <select id="archive-sort" onchange="sortArchives()" style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-color); padding: 4px 8px; border-radius: 4px; font-family: inherit; font-size: 0.85rem; cursor: pointer;">
       <option value="date-desc">发布时间 (最新 → 最早)</option>
       <option value="date-asc">发布时间 (最早 → 最新)</option>
@@ -35,6 +39,7 @@
 <div class="archive-list" id="archive-container">
   {{ range .Site.RegularPages.ByDate.Reverse }}
   <article class="archive-card" 
+           data-type="{{ .Params.type | default "studio" }}"
            data-date="{{ .Date.Format "2006-01-02" }}" 
            data-rating="{{ .Params.rating | default 0 }}"
            style="background: var(--card-bg); border: 1px solid var(--border-color); border-left: 4px solid {{ if eq .Params.type "live" }}#2E8B57{{ else }}var(--accent-red){{ end }}; padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 4px;">
@@ -68,8 +73,35 @@
   {{ end }}
 </div>
 
-<!-- 动态排序脚本 -->
+<!-- 轻量交互脚本 (支持筛选 + 排序) -->
 <script>
+let currentType = 'all';
+
+function filterType(type, btnElement) {
+  currentType = type;
+  
+  // 1. 更新按钮高亮样式
+  const buttons = document.querySelectorAll('.filter-btn');
+  buttons.forEach(btn => {
+    btn.style.background = 'var(--tag-bg)';
+    btn.style.color = 'var(--text-color)';
+    btn.style.border = '1px solid var(--border-color)';
+  });
+  btnElement.style.background = 'var(--accent-red)';
+  btnElement.style.color = 'white';
+  btnElement.style.border = 'none';
+
+  // 2. 原地显示/隐藏卡片
+  const cards = document.querySelectorAll('.archive-card');
+  cards.forEach(card => {
+    if (type === 'all' || card.dataset.type === type) {
+      card.style.display = 'block';
+    } else {
+      card.style.display = 'none';
+    }
+  });
+}
+
 function sortArchives() {
   const container = document.getElementById('archive-container');
   const cards = Array.from(container.getElementsByClassName('archive-card'));
@@ -87,6 +119,9 @@ function sortArchives() {
 
   container.innerHTML = '';
   cards.forEach(card => container.appendChild(card));
+  
+  // 保持当前的筛选状态
+  filterType(currentType, document.querySelector(`.filter-btn[onclick*="${currentType}"]`));
 }
 </script>
 {{ end }}
