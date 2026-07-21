@@ -1,48 +1,33 @@
-{{ .Title }} - {{ .Site.Title }}
+{{ define "main" }}
+<article>
+  <div style="font-size: 0.85rem; color: #888; margin-bottom: 0.5rem;">
+    <a href="{{ .Site.BaseURL }}" style="color: #888; text-decoration: none;">首页</a> / 档案详情
+  </div>
+  <h1 style="font-size: 1.6rem; color: #1A1A1A; margin-bottom: 1.2rem; line-height: 1.4;">{{ .Title }}</h1>
   
-
-
-  
-    {{ .Site.Title }}
-    {{ .Site.Params.subtitle }}
-    
-      {{ range .Site.Menus.main }}
-        {{ .Name }}
+  <div style="background: #F7F4EE; border: 1px dashed var(--border-color); padding: 1.2rem; margin-bottom: 2rem; border-radius: 4px; font-size: 0.9rem;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.6rem;">
+      <div><strong>🎼 作曲家：</strong>{{ .Params.composer }}</div>
+      {{ if .Params.catalog_no }}<div><strong>🔢 作品编号：</strong><span class="meta-catalog">{{ .Params.catalog_no }}</span></div>{{ end }}
+      {{ if .Params.era }}<div><strong>🏛️ 音乐时期：</strong>{{ index .Site.Params.eras .Params.era | default .Params.era }}</div>{{ end }}
+      {{ if .Params.rating }}<div><strong>⭐ 个人评分：</strong>{{ .Params.rating }} / 5.0</div>{{ end }}
+    </div>
+    {{ if .Params.tags }}
+    <div style="margin-top: 0.8rem; border-top: 1px solid var(--border-color); padding-top: 0.6rem;">
+      <strong>🏷️ 标签：</strong>
+      {{ range .Params.tags }}
+        <span class="meta-badge">{{ . }}</span>
       {{ end }}
-    
-  
-  
-    
-      
-        首页 / 档案详情
-      
-      {{ .Title }}
-      
-      
-        
-          🎼 作曲家：{{ .Params.composer }}
-          {{ if .Params.catalog_no }}🔢 作品编号：{{ .Params.catalog_no }}{{ end }}
-          {{ if .Params.era }}🏛️ 音乐时期：{{ index .Site.Params.eras .Params.era | default .Params.era }}{{ end }}
-          {{ if .Params.rating }}⭐ 个人评分：{{ .Params.rating }} / 5.0{{ end }}
-        
-        {{ if .Params.tags }}
-        
-          🏷️ 标签：
-          {{ range .Params.tags }}
-            {{ . }}
-          {{ end }}
-        
-        {{ end }}
-      
+    </div>
+    {{ end }}
+  </div>
 
-      
-        {{ .Content }}
-      
+  <div class="article-body" style="font-size: 1.05rem; line-height: 1.8;">
+    {{ .Content }}
+  </div>
 
-      
-        档案编号：{{ .Params.archive_id }} | 归档日期：{{ .Date.Format "2006年01月02日" }}
-      
-    
-  
-  
-    © {{ now.Format "2006" }} OpusLog · 典雅与序位的数字记录
+  <div style="margin-top: 3rem; padding-top: 1rem; border-top: 1px solid var(--border-color); font-size: 0.85rem; color: #777;">
+    档案编号：{{ .Params.archive_id }} | 归档日期：{{ .Date.Format "2006年01月02日" }}
+  </div>
+</article>
+{{ end }}
