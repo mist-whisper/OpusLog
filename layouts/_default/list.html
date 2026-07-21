@@ -1,0 +1,34 @@
+{{ define "main" }}
+<div style="margin-bottom: 2rem; border-bottom: 1px solid var(--border-color); padding-bottom: 1rem;">
+  <h2 style="font-size: 1.3rem; color: var(--accent-red); margin-bottom: 0.3rem;">
+    📂 分类/标签档案：{{ .Title }}
+  </h2>
+  <div style="font-size: 0.88rem; color: #666;">
+    当前共有 {{ len .Pages }} 份相关归档记录
+  </div>
+</div>
+
+<div class="archive-list">
+  {{ range .Pages }}
+  <article style="background: var(--card-bg); border: 1px solid var(--border-color); border-left: 4px solid var(--accent-red); padding: 1.5rem; margin-bottom: 1.5rem; border-radius: 4px;">
+    <div style="font-size: 0.85rem; color: #888; margin-bottom: 0.3rem;">
+      <span>{{ .Params.archive_id | default "OPUS" }}</span> · <span>{{ .Date.Format "2006-01-02" }}</span>
+    </div>
+    <h3 style="margin: 0.2rem 0 0.8rem 0; font-size: 1.25rem;">
+      <a href="{{ .RelPermalink }}" style="color: var(--accent-red); text-decoration: none;">{{ .Title }}</a>
+    </h3>
+    <div style="margin-bottom: 0.8rem;">
+      <span class="meta-badge">🎼 {{ .Params.composer }}</span>
+      {{ if .Params.catalog_no }}<span class="meta-badge meta-catalog">{{ .Params.catalog_no }}</span>{{ end }}
+      {{ if .Params.era }}<span class="meta-badge">🏛️ {{ index .Site.Params.eras .Params.era | default .Params.era }}</span>{{ end }}
+    </div>
+    <p style="font-size: 0.95rem; color: #555; margin: 0.5rem 0 1rem 0;">
+      {{ .Summary | truncate 120 }}
+    </p>
+    <div>
+      <a href="{{ .RelPermalink }}" style="font-size: 0.88rem; font-weight: bold; color: var(--text-color); text-decoration: none;">阅读完整档案 →</a>
+    </div>
+  </article>
+  {{ end }}
+</div>
+{{ end }}
