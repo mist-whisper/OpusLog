@@ -5,7 +5,7 @@
   </div>
   <h1 style="font-size: 1.6rem; color: #1A1A1A; margin-bottom: 1.2rem; line-height: 1.4;">{{ .Title }}</h1>
   
-  <!-- 古典乐元数据面板 (支持现场观演字段) -->
+  <!-- 古典乐元数据面板 -->
   <div style="background: #F7F4EE; border: 1px dashed var(--border-color); padding: 1.2rem; margin-bottom: 2rem; border-radius: 4px; font-size: 0.9rem;">
     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 0.6rem;">
       <div><strong>🎼 作曲家：</strong>{{ .Params.composer }}</div>
@@ -21,11 +21,14 @@
       {{ end }}
     </div>
 
-    {{ if .Params.tags }}
+    <!-- 🏷️ 正确使用 .GetTerms 获取标签对象，彻底告别 404 -->
+    {{ if .GetTerms "tags" }}
     <div style="margin-top: 0.8rem; border-top: 1px solid var(--border-color); padding-top: 0.6rem;">
       <strong>🏷️ 标签：</strong>
-      {{ range .Params.tags }}
-        <span class="meta-badge"><a href="{{ "/tags/" | relLangURL }}{{ . | urlize }}/" style="text-decoration:none; color:inherit;">{{ . }}</a></span>
+      {{ range .GetTerms "tags" }}
+        <span class="meta-badge">
+          <a href="{{ .RelPermalink }}" style="text-decoration:none; color:inherit;">{{ .LinkTitle }}</a>
+        </span>
       {{ end }}
     </div>
     {{ end }}
