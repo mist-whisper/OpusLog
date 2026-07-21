@@ -1,7 +1,7 @@
 # ----------------------------------------------------------------------
 # 1. 站点基础信息 (Site Basic Info)
 # ----------------------------------------------------------------------
-baseURL = 'https://opuslog.pages.dev/'
+baseURL = 'https://<mist-whisper>.github.io/opus-log/'
 languageCode = 'zh-cn'
 title = 'OpusLog · 古典乐赏析与演出数字档案库'
 
