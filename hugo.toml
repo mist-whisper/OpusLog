@@ -25,24 +25,14 @@ title = 'OpusLog · 古典乐赏析与演出数字档案库'
 # 3. 顶部主导航菜单 (Navigation Bar)
 # ----------------------------------------------------------------------
 [[menus.main]]
-  name = '🏛️ 档案首页'
+  name = '🏛️ 档案大厅'
   url = '/'
   weight = 1
 
 [[menus.main]]
-  name = '🎼 作曲家'
+  name = '🎼 作曲家索引'
   url = '/tags/'
   weight = 2
-
-[[menus.main]]
-  name = '💿 唱片名盘'
-  url = '/tags/studio/'
-  weight = 3
-
-[[menus.main]]
-  name = '🎟️ 现场观演'
-  url = '/tags/live/'
-  weight = 4
 
 # ----------------------------------------------------------------------
 # 4. 结构化数据解析规则
