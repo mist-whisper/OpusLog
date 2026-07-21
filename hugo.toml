@@ -50,3 +50,7 @@ title = 'OpusLog · 古典乐赏析与演出数字档案库'
 [taxonomies]
   tag = 'tags'
   category = 'categories'
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
