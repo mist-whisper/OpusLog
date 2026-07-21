@@ -33,7 +33,7 @@
 
 <!-- 3. 档案卡片列表 -->
 <div class="archive-list" id="archive-container">
-  {{ range .Site.RegularPages.ByDate.Reversed }}
+  {{ range .Site.RegularPages.ByDate.Reverse }}
   <article class="archive-card" 
            data-date="{{ .Date.Format "2006-01-02" }}" 
            data-rating="{{ .Params.rating | default 0 }}"
